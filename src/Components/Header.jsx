@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../Context/AuthContext"; 
 import React from "react";
 
 export default function Header() {
