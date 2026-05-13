@@ -1,10 +1,32 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Contacts from "./Contacts";
 import ChatWindow from "./ChatWindow";
 import MediaPanel from "./Media";
 import React from "react";  
 export default function ChatLayout() {
   const [selectedChat, setSelectedChat] = useState(null);
+
+    useEffect(() => {
+    const restoreChat = async () => {
+      const saved = localStorage.getItem("lastChat");
+      if (!saved) return;
+
+      const { userId, conversationId } = JSON.parse(saved);
+
+      try {
+        const res = await API.get(`/user/${userId}`);
+        setSelectedChat({
+          ...res.data,
+          conversationId,
+        });
+      } catch (err) {
+        console.error("Restore chat failed", err);
+        localStorage.removeItem("lastChat");
+      }
+    };
+
+    restoreChat();
+  }, []);
 
   return (
     <div className="flex flex-1 overflow-hidden gap-4">
